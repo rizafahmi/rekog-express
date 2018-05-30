@@ -3,7 +3,7 @@ require('dotenv').config()
 
 const recognize = async ( image ) => {
   AWS.config.loadFromPath('./.secret.json')
-  await uploadImage("rekog-techinasia", image)
+  const s3Object = await uploadImage("rekog-techinasia", image)
   return new Promise((resolve, reject) => {
     const rekog = new AWS.Rekognition()
     const params = {
@@ -30,7 +30,7 @@ const recognize = async ( image ) => {
       } else {
         const labels = data.Labels.map(l => l.Name)
         console.log(`${image.name}: ${labels.join(", ")}`)
-        resolve(labels)
+        resolve({s3Object, labels})
       }
     })
 
@@ -39,12 +39,15 @@ const recognize = async ( image ) => {
 
 const uploadImage = (bucketName, image) => {
   const s3 = new AWS.S3()
-  console.log(image.data.buffer)
   return new Promise((resolve, reject) => {
     s3.upload({
       Bucket: bucketName,
       Key: image.name,
-      Body: new Buffer(image.data.buffer)
+      Body: new Buffer(image.data.buffer),
+      ACL: 'public-read',
+      Metadata: {
+        'Content-Type': image.mimetype
+      }
     }, (err, data) => {
       if (err) {
         console.error(err)
