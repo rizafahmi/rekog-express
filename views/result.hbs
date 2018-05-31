@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Rekog Express</title>
+    <link rel="stylesheet" href="https://unpkg.com/carbon-components@8.23.0/css/carbon-components.min.css" type="text/css" media="screen" charset="utf-8">
+    <link rel="stylesheet" href="style.css" type="text/css" media="screen" charset="utf-8">
+  </head>
+  <body class="bx--body">
+    <div class="container">
+      <div class="bx--grid">
+        <div class="page-header">
+          <h1>🌭🌭🌭 HotDog or <span style="color: #e0182d">Not</span> 🌭🌭🌭 HotDog</h1>
+        </div>
+        <div class="bx--row upload-box">
+          <div class="bx--col-xs-7">
+            <img src="{{s3Object.Location}}" style="max-width: 450px"/>
+          </div>
+          <div class="bx--col-xs-5">
+            <h2>
+              {{#unless isHotDog }}
+              <span class="bx--tag bx--tag--experimental">Not</span> &nbsp;
+              {{/unless}}
+              HOTDOG!</h2>
+          </div>
+        </div>
+        <div class="bx--row upload-box">
+          <div class="bx--col-xs-12">
+            <div class="bx--form-item">
+              <strong class="bx--label">Upload your photo</strong>
+              <p class="bx--label-description">only .jpg and .png. 1MB max file size.</p>
+              <div class="bx--file" data-file>
+                
+                <form action="/upload" method="post" enctype="multipart/form-data">
+                  <label
+                    for="your-file-importer-id-here"
+                    class="bx--file-btn bx--btn bx--btn--secondary"
+                    role="button"
+                    tabindex="0">Add files</label>
+                  <input
+                    type="file"
+                    class="bx--file-input"
+                    id="your-file-importer-id-here"
+                    name="picture"
+                    data-file-uploader
+                    data-target="[data-file-container]"
+                    multiple
+                    />
+                  <button class="bx--btn bx--btn--primary" type="submit">Upload</button>
+                </form>
+                <div data-file-container class="bx--file-container"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
